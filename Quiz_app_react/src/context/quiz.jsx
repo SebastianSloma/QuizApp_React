@@ -1,5 +1,5 @@
 import { createContext, useReducer } from 'react';
-import questions from '../data/questions';
+import questions from '../data/questions_complete';
 
 const STAGES = ['Start', 'Playing', 'End'];
 
@@ -7,6 +7,10 @@ const initialState = {
 	gameStage: STAGES[0],
 	questions,
 	currentQuestions: 0,
+	score: 0,
+	answerSelected: false,
+	help: false,
+	optionToHIde: null,
 };
 
 const quizReducer = (state, action) => {
@@ -16,6 +20,19 @@ const quizReducer = (state, action) => {
 				...state,
 				gameStage: STAGES[1],
 			};
+			case "START_GAME":
+      let quizQuestions = null;
+
+      state.questions.forEach((question) => {
+        if (question.category === action.payload) {
+          quizQuestions = question.questions;
+        }
+      });
+	  return {
+        ...state,
+        questions: quizQuestions,
+        gameStage: STAGES[2],
+      };
 
 		case 'REORDER_QUESTIONS':
 			const reorderedQuestions = questions.sort(() => {
@@ -25,6 +42,24 @@ const quizReducer = (state, action) => {
 				...state,
 				questions: reorderedQuestions,
 			};
+
+		case 'CHANGE_QUESTION':
+			const nextQuestion = state.currentQuestion + 1;
+			let endGeme = false
+
+			if(!questions[nextQuestion]){
+				endGeme = true
+			}
+
+			return{
+				...state,
+				currentQuestion: nextQuestion,
+				gameStage: endGeme ? STAGES[3] : state.gameStage,
+				answerSelected: false,
+				help: flase
+			}
+			case "NEW_GAME":
+				return initialState
 
 		default:
 			return state;
