@@ -11,7 +11,10 @@ const initialState = {
 const quizReducer = (state, action) => {
 	switch (action.type) {
 		case 'CHANGE_STAGE':
-			return state;
+			return {
+                ...state,
+                gameStage: STAGES[1]
+            };
 
 		default:
 			return state;
@@ -21,7 +24,7 @@ const quizReducer = (state, action) => {
 export const QuizContext = createContext();
 
 export const QuizProvider = ({ children }) => {
-	const value = useReducer(quizReducer);
+	const value = useReducer(quizReducer, initialState);
 
 	return <QuizContext.Provider value={value}>{children}</QuizContext.Provider>;
 };
