@@ -5,7 +5,7 @@ import Quiz from '../img/QuizNight.jpg';
 
 import './Welcome.css';
 
-const welcome = () => {
+const Welcome = () => {
 	const [quizState, dispatch] = useContext(QuizContext);
 
 	return (
@@ -18,4 +18,4 @@ const welcome = () => {
 	);
 };
 
-export default welcome;
+export default Welcome;

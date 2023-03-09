@@ -20,19 +20,19 @@ const quizReducer = (state, action) => {
 				...state,
 				gameStage: STAGES[1],
 			};
-			case "START_GAME":
-      let quizQuestions = null;
+		case 'START_GAME':
+			let quizQuestions = null;
 
-      state.questions.forEach((question) => {
-        if (question.category === action.payload) {
-          quizQuestions = question.questions;
-        }
-      });
-	  return {
-        ...state,
-        questions: quizQuestions,
-        gameStage: STAGES[2],
-      };
+			state.questions.forEach((question) => {
+				if (question.category === action.payload) {
+					quizQuestions = question.questions;
+				}
+			});
+			return {
+				...state,
+				questions: quizQuestions,
+				gameStage: STAGES[2],
+			};
 
 		case 'REORDER_QUESTIONS':
 			const reorderedQuestions = questions.sort(() => {
@@ -45,21 +45,36 @@ const quizReducer = (state, action) => {
 
 		case 'CHANGE_QUESTION':
 			const nextQuestion = state.currentQuestion + 1;
-			let endGeme = false
+			let endGeme = false;
 
-			if(!questions[nextQuestion]){
-				endGeme = true
+			if (!questions[nextQuestion]) {
+				endGeme = true;
 			}
 
-			return{
+			return {
 				...state,
 				currentQuestion: nextQuestion,
 				gameStage: endGeme ? STAGES[3] : state.gameStage,
 				answerSelected: false,
-				help: flase
-			}
-			case "NEW_GAME":
-				return initialState
+				help: flase,
+			};
+		case 'NEW_GAME':
+			return initialState;
+
+		case 'CHECK_ANSWER':
+			if (state.answerSelected) return state;
+
+			const answer = action.payload.answer;
+			const option = action.payload.option;
+			let correctAnswer = 0;
+
+			if (answer === option) correctAnswer = 1;
+
+			return {
+				...state,
+				score: state.score + correctAnswer,
+				answerSelected: option,
+			};
 
 		default:
 			return state;

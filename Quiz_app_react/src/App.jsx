@@ -17,9 +17,9 @@ function App() {
 	return (
 		<div className='App'>
 			<h1>Quiz App React</h1>
-			{quizState.gameStage === "Start" && <Welcome />}
-			{quizState.gameStage === "Playing "&& <Question />}
-			{quizState.gameStage === "End" && <GameOver/>}
+			{quizState.gameStage === 'Start' && <Welcome />}
+			{quizState.gameStage === 'Playing' && <Question />}
+			{quizState.gameStage === 'End' && <GameOver />}
 		</div>
 	);
 }
